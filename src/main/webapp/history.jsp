@@ -25,7 +25,6 @@
 			<td>비고</td>
 		</tr>
 		<tr class="tr1-1">
-			
 		</tr>
 	</table>
 </div>

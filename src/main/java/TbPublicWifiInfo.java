@@ -2,9 +2,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-public class getdata {
+public class TbPublicWifiInfo {
 	public static void main(String[] args) throws IOException {
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088"); /*URL*/
 		urlBuilder.append("/" +  URLEncoder.encode("4445686c456368753836486758657a","UTF-8") ); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
@@ -32,12 +38,34 @@ public class getdata {
 		}
 		StringBuilder sb = new StringBuilder();
 		String line;
+		String cnt;
 		while ((line = rd.readLine()) != null) {
-				sb.append(line);
+			
+			System.out.println(rd.getClass());
+			sb.append(line); 
 		}
 		rd.close();
 		conn.disconnect();
 		System.out.println(sb.toString());
 		
+		
+		
+		sample a = new sample("이름",12);
+		
+		JsonParser parser = new JsonParser();
+		JsonElement element = parser.parse(sb.toString());
+		JsonObject rootob = element.getAsJsonObject().get("TbPublicWifiInfo").getAsJsonObject();
+		int cnt = rootob.getAsInt()
+		
+		Gson gson = new Gson();
+		JsonArray item = rootob.getAsJsonObject().get("row").getAsJsonArray();
+		List<WifiClass> list = gson.fromJson(item.toString(), new TypeToken<List<WifiClass>>()
+				{}.getType());
+//		System.out.println(list.get(0).getX_SWIFI_ADRES1());
+//		System.out.println(list.get(0).getX_SWIFI_ADRES2());
+//		System.out.println(list.get(5).getX_SWIFI_ADRES2());
+//		
+		
+		a.printdata();
 	}
 }
