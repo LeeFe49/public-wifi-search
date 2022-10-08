@@ -112,4 +112,6 @@ public class WifiClass {
 	public void setWORK_DTTM(String wORK_DTTM) {
 		WORK_DTTM = wORK_DTTM;
 	}
+	
+	
 }

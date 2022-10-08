@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.IOException;
 public class TbPublicWifiInfo {
-	public static void main(String[] args) throws IOException {
+	public static List<WifiClass> list() throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088"); /*URL*/
 		urlBuilder.append("/" +  URLEncoder.encode("4445686c456368753836486758657a","UTF-8") ); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
 		urlBuilder.append("/" +  URLEncoder.encode("json","UTF-8") ); /*요청파일타입 (xml,xmlf,xls,json) */
@@ -55,17 +55,23 @@ public class TbPublicWifiInfo {
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(sb.toString());
 		JsonObject rootob = element.getAsJsonObject().get("TbPublicWifiInfo").getAsJsonObject();
-		int cnt = rootob.getAsInt()
+		
 		
 		Gson gson = new Gson();
 		JsonArray item = rootob.getAsJsonObject().get("row").getAsJsonArray();
 		List<WifiClass> list = gson.fromJson(item.toString(), new TypeToken<List<WifiClass>>()
 				{}.getType());
+		
+		return list;
+	}
+	public static void main(String[] args) throws IOException {
+		
 //		System.out.println(list.get(0).getX_SWIFI_ADRES1());
 //		System.out.println(list.get(0).getX_SWIFI_ADRES2());
 //		System.out.println(list.get(5).getX_SWIFI_ADRES2());
-//		
 		
-		a.printdata();
+//		System.out.println(rootob.get("list_total_count"));
+		
+//		a.printdata();
 	}
 }
