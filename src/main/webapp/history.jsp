@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.util.List" %>    
-<%@ page import="TbPublicWifiInfo" %>
+<%@ page import="db.TbPublicWifiInfo" %>
+<%@ page import="db.WifiClass" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,9 +31,5 @@
 		</tr>
 	</table>
 </div>
-	<%
-		TbPublicWifiInfo wifiInfo = new TbPublicWifiInfo();
-		List<WifiClass> list = wifiInfo.list();
-	%>
 </body>
 </html>

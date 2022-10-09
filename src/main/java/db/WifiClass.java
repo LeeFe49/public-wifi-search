@@ -1,4 +1,4 @@
-
+package db;
 public class WifiClass {
 	private String X_SWIFI_MGR_NO;
 	private String X_SWIFI_WRDOFC;
@@ -112,6 +112,4 @@ public class WifiClass {
 	public void setWORK_DTTM(String wORK_DTTM) {
 		WORK_DTTM = wORK_DTTM;
 	}
-	
-	
 }

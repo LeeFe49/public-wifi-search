@@ -1,56 +1,64 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<link href="style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<h2 class="title1"><b>와이파이 정보 구하기</b></h2>
-<div>
-<a href="http://localhost:8080/zerobase-study21/home.jsp">홈</a><span> |</span>
-<a href="http://localhost:8080/zerobase-study21/history.jsp">위치 히스토리 목록</a><span> |</span>
-<a href="http://localhost:8080/zerobase-study21/load-wifi.jsp">Open API 와이파이 정보 가져오기</a>
-</div>
-<br>
-<div>
-	<form>
-		<label for="lat">LAT: </label>
-		<input type="text" id="lat" name="lat"><span> , </span>
-		<label for="lnt">LNT: </label>
-		<input type="text" id="lnt" name="lnt">
-		<input type="submit" value="내 위치 가져오기">
-		<input type="submit" value="근처 WIFI 정보 보기">
-	</form>
-</div>
-<br>
-<div>
-	<table>
-		<tr class="tr1">
-			<th>거리(Km)</th>
-			<th>과리번호</th>
-			<th>자치구</th>
-			<th>와이파이명</th>
-			<th>도로명주소</th>
-			<th>상세주소</th>
-			<th>설치위치(층)</th>
-			<th>설치유형</th>
-			<th>설치기관</th>
-			<th>서비스구분</th>
-			<th>망종류</th>
-			<th>설치년도</th>
-			<th>실내외구분</th>
-			<th>WIFI접속환경</th>
-			<th>X좌표</th>
-			<th>Y좌표</th>
-			<th>작업일자</th>
-		</tr>
-		<tr class="tr1-1">
-			<td colspan="17">위치 정보를 입력한 후에 조회해 주세요</td>
-		</tr>
-	</table>
-</div>
-</body>
-</html>
+<%
+	out.write("<html>");
+	out.write("<head>");
+	out.write("<meta charset=\"UTF-8\">");
+		out.write("<title>Insert title here</title>");
+		out.write("<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\">");
+	out.write("</head>");
+	out.write("<body>");
+		out.write("<h2 class=\"title1\"><b>와이파이 정보 구하기</b></h2>");
+			out.write("<div>");
+				out.write("<a href=\"http://localhost:8080/zerobase-study21/home.jsp\">홈</a><span> | </span>");
+				out.write("<a href=\"http://localhost:8080/zerobase-study21/history.jsp\">위치 히스토리 목록</a><span> | </span>");
+				out.write("<a href=\"http://localhost:8080/zerobase-study21/load-wifi.jsp\">Open API 와이파이 정보 가져오기</a>");
+			out.write("</div>");
+			out.write("<br>");
+			out.write("<div>");
+				out.write("<form>");
+					out.write("<label id=\"lat\" for=\"lat\">LAT: </label>");
+					out.write("<input type=\"text\" id=\"lat\" name=\"lat\"><span> , </span>");
+					out.write("<label id=\"lnt\" for=\"lnt\">LNT: </label>");
+					out.write("<input type=\"text\" id=\"lnt\" name=\"lnt\"><span> </span>");
+					out.write("<button onclick=\"myLoc\">내 위치 가져오기</button><span> </span>");
+					out.write("<button onclick=\"myLoc\">근처 WIFI 정보 보기</button>");
+					out.write("<script>");
+					
+					
+					
+					
+					out.write("</script>");
+				out.write("</form>");
+			out.write("</div>");
+			out.write("<br>");
+			out.write("<div>");
+				out.write("<table>");
+					out.write("<tr class=\"tr1\">");
+					out.write("<th>거리(Km)</th>");
+					out.write("<th>과리번호</th>");
+					out.write("<th>자치구</th>");
+					out.write("<th>와이파이명</th>");
+					out.write("<th>도로명주소</th>");
+					out.write("<th>상세주소</th>");
+					out.write("<th>설치위치(층)</th>");
+					out.write("<th>설치유형</th>");
+					out.write("<th>설치기관</th>");
+					out.write("<th>서비스구분</th>");
+					out.write("<th>망종류</th>");
+					out.write("<th>설치년도</th>");
+					out.write("<th>실내외구분</th>");
+					out.write("<th>WIFI접속환경</th>");
+					out.write("<th>X좌표</th>");
+					out.write("<th>Y좌표</th>");
+					out.write("<th>작업일자</th>");
+					out.write("</tr>");
+					out.write("<tr class=\"tr1-1\">");
+					out.write("<td colspan=\"17\">위치 정보를 입력한 후에 조회해 주세요</td>");
+					out.write("</tr>");
+				out.write("</table>");
+			out.write("</div>");
+		out.write("</body>");
+	out.write("</html>");
+ %>

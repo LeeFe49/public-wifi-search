@@ -1,3 +1,5 @@
+package db;
+
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -11,7 +13,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.IOException;
 public class TbPublicWifiInfo {
-	public static List<WifiClass> list() throws IOException{
+	public static List<WifiClass> list(String[] cnt) throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088"); /*URL*/
 		urlBuilder.append("/" +  URLEncoder.encode("4445686c456368753836486758657a","UTF-8") ); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
 		urlBuilder.append("/" +  URLEncoder.encode("json","UTF-8") ); /*요청파일타입 (xml,xmlf,xls,json) */
@@ -38,7 +40,6 @@ public class TbPublicWifiInfo {
 		}
 		StringBuilder sb = new StringBuilder();
 		String line;
-		String cnt;
 		while ((line = rd.readLine()) != null) {
 			
 			System.out.println(rd.getClass());
@@ -48,9 +49,6 @@ public class TbPublicWifiInfo {
 		conn.disconnect();
 		System.out.println(sb.toString());
 		
-		
-		
-		sample a = new sample("이름",12);
 		
 		JsonParser parser = new JsonParser();
 		JsonElement element = parser.parse(sb.toString());
@@ -62,6 +60,12 @@ public class TbPublicWifiInfo {
 		List<WifiClass> list = gson.fromJson(item.toString(), new TypeToken<List<WifiClass>>()
 				{}.getType());
 		
+		JsonElement tmp = rootob.get("list_total_count");
+		cnt[0] = tmp.getAsString();
+		
+//		System.out.println(rootob.get("list_total_count").getAsString());
+		cnt[0] = rootob.get("list_total_count").getAsString();
+		
 		return list;
 	}
 	public static void main(String[] args) throws IOException {
@@ -71,6 +75,12 @@ public class TbPublicWifiInfo {
 //		System.out.println(list.get(5).getX_SWIFI_ADRES2());
 		
 //		System.out.println(rootob.get("list_total_count"));
+		
+//		TbPublicWifiInfo wifiInfo = new TbPublicWifiInfo();
+//		String[] cnt = new String[1];
+//		List<WifiClass> list = wifiInfo.list(cnt);
+//		//System.out.println(list.get(0).getX_SWIFI_ADRES1());
+//		System.out.println(cnt[0]);
 		
 //		a.printdata();
 	}
