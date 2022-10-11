@@ -36,7 +36,7 @@ System.out.println(list.size() + "개 로드 성공!");
 System.out.println(list.get(list.size() - 1).getX_SWIFI_WRDOFC());
 db.initDb(list);
 
-out.write("<p>" + cnt[0] + "개의 WIFI 정보를 정상적으로 저장하였습니다.</p>");
+out.write("<p>" + list.size() + "개의 WIFI 정보를 정상적으로 저장하였습니다.</p>");
 out.write("</div>");
 out.write("<a href=\"http://localhost:8080/zerobase-study21/home.jsp\">홈 으로 가기</a>");
 

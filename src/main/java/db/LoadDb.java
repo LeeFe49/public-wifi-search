@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.List;
 
 public class LoadDb {
-	public void initDb(List<WifiClass> list) {
+	public void resetHistory() {
 		String url = "jdbc:mariadb://localhost:3306/projectdb1";
 		String dbUserId = "testuser1";
 		String dbPassword = "0409";
@@ -22,11 +22,124 @@ public class LoadDb {
 		try {
 			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 
-			String sql = "insert into info\n"
-					+ "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-			
+			String sql = "truncate history";
+
 			int affected;
-			
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			affected = preparedStatement.executeUpdate();
+			if (affected < 0) {
+				System.out.println("저장 실패");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void resetInfo() {
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		try {
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "truncate info";
+
+			int affected;
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			affected = preparedStatement.executeUpdate();
+			if (affected < 0) {
+				System.out.println("저장 실패");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void initDb(List<WifiClass> list) {
+
+		resetInfo();
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		try {
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "insert into info\n" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+
+			int affected;
+
 			for (int i = 0; i < list.size(); i++) {
 				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setString(1, "");
@@ -46,9 +159,9 @@ public class LoadDb {
 				preparedStatement.setString(15, list.get(i).getLAT());
 				preparedStatement.setString(16, list.get(i).getLNT());
 				preparedStatement.setString(17, list.get(i).getWORK_DTTM());
-				
+
 				affected = preparedStatement.executeUpdate();
-				if(affected<0) {
+				if (affected < 0) {
 					System.out.println("저장 실패");
 				}
 			}
@@ -79,7 +192,7 @@ public class LoadDb {
 		}
 	}
 
-	public void dbSelect() {
+	public List<WifiClass> dbSelect() {
 		String url = "jdbc:mariadb://localhost:3306/projectdb1";
 		String dbUserId = "testuser1";
 		String dbPassword = "0409";
@@ -103,24 +216,44 @@ public class LoadDb {
 		ResultSet rs = null;
 
 		String memberTypeValue = "email";
+		
+		List<WifiClass> list = null;
+		WifiClass tmp = null;
 
 		try {
 			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 
-			String sql = "select * from history";
+			String sql = "select * from info where X_SWIFI_WRDOFC=\"서대문구\"";
 
 			preparedStatement = connection.prepareStatement(sql);
-			preparedStatement.setString(1, memberTypeValue);
+			//preparedStatement.setString(1, memberTypeValue);
 
 			rs = preparedStatement.executeQuery();
 
 			System.out.println("db load success!");
 
 			while (rs.next()) {
-				String X_SWIFI_MGR_NO = rs.getString("X_SWIFI_MGR_NO");
-				String WORK_DTTM = rs.getString("WORK_DTTM");
-				String LAT = rs.getString("LAT");
-				String LNT = rs.getString("LNT");
+				//wificlass 객체 반환하기
+				//(임의로 서대문구 위치한 객체 반환으로 테스트)
+				//후에 list에 하나씩 추가
+				//list 반환 후 테이블 표현
+				
+//				tmp.setLAT(rs.getString("X_SWIFI_MGR_NO"));
+//				tmp.setLNT(rs.);
+//				tmp.setWORK_DTTM(sql);
+//				tmp.setX_SWIFI_ADRES1(sql);
+//				tmp.setX_SWIFI_ADRES2(sql);
+//				tmp.setX_SWIFI_CMCWR(sql);
+//				tmp.setX_SWIFI_CNSTC_YEAR(sql);
+//				tmp.setX_SWIFI_INOUT_DOOR(sql);
+//				tmp.setX_SWIFI_INSTL_FLOOR(sql);
+//				tmp.setX_SWIFI_INSTL_MBY(sql);
+//				tmp.setX_SWIFI_INSTL_TY(sql);
+//				tmp.setX_SWIFI_MAIN_NM(sql);
+//				tmp.setX_SWIFI_MGR_NO(sql);
+//				tmp.setX_SWIFI_REMARS3(sql);
+//				tmp.setX_SWIFI_SVC_SE(sql);
+//				tmp.set
 
 				System.out.println(X_SWIFI_MGR_NO + ", " + WORK_DTTM + ", " + LAT + ", " + LNT);
 			}
@@ -149,6 +282,7 @@ public class LoadDb {
 				e.printStackTrace();
 			}
 		}
+		return list;
 	}
 
 	public void register(String X_SWIFI_MGR_NO, String WORK_DTTM, String LAT, String LNT) {
@@ -273,6 +407,7 @@ public class LoadDb {
 	}
 
 	public void test(String X_SWIFI_MGR_NO, String WORK_DTTM, String LAT, String LNT) {
+		resetHistory();
 		String url = "jdbc:mariadb://localhost:3306/projectdb1";
 		String dbUserId = "testuser1";
 		String dbPassword = "0409";
@@ -331,6 +466,5 @@ public class LoadDb {
 			}
 		}
 	}
-
 
 }

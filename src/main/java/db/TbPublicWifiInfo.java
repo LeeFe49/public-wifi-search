@@ -92,29 +92,30 @@ public class TbPublicWifiInfo {
 		
 		//___________________
 		
-		TbPublicWifiInfo wifiInfo = new TbPublicWifiInfo();
-		
-		String[] cnt = new String[1];
-
-		List<WifiClass> list = wifiInfo.list(cnt, 1, 100);
-		List<WifiClass> tmp;
-		int count = Integer.parseInt(cnt[0]);
-		System.out.println(count);
-		int i;
-		for(i=101;i<count;i+=100) {
-			tmp = wifiInfo.list(cnt, i,i+99);
-			list.addAll(tmp);
-		}
-		
-		System.out.println(cnt[0]);
-		System.out.println(list.size()+"개 로드 성공!");
-		
-		System.out.println(list.get(list.size()-1).getX_SWIFI_WRDOFC());
-		db.initDb(list);
+//		TbPublicWifiInfo wifiInfo = new TbPublicWifiInfo();
+//		
+//		String[] cnt = new String[1];
+//
+//		List<WifiClass> list = wifiInfo.list(cnt, 1, 100);
+//		List<WifiClass> tmp;
+//		int count = Integer.parseInt(cnt[0]);
+//		System.out.println(count);
+//		int i;
+//		for(i=101;i<count;i+=100) {
+//			tmp = wifiInfo.list(cnt, i,i+99);
+//			list.addAll(tmp);
+//		}
+//		
+//		System.out.println(cnt[0]);
+//		System.out.println(list.size()+"개 로드 성공!");
+//		
+//		System.out.println(list.get(list.size()-1).getX_SWIFI_WRDOFC());
+//		db.initDb(list);
 		
 		//_________________
 		
-//		db.test("c", "c", "c", "c");
+		//db.resetHistory();
+		db.test("b", "b", "b", "b");
 		
 	}
 }
