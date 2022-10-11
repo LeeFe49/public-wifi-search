@@ -5,7 +5,7 @@
 	out.write("<html>");
 	out.write("<head>");
 	out.write("<meta charset=\"UTF-8\">");
-		out.write("<title>Insert title here</title>");
+		out.write("<title>Home</title>");
 		out.write("<link href=\"style.css\" rel=\"stylesheet\" type=\"text/css\">");
 	out.write("</head>");
 	out.write("<body>");
@@ -13,24 +13,43 @@
 			out.write("<div>");
 				out.write("<a href=\"http://localhost:8080/zerobase-study21/home.jsp\">홈</a><span> | </span>");
 				out.write("<a href=\"http://localhost:8080/zerobase-study21/history.jsp\">위치 히스토리 목록</a><span> | </span>");
-				out.write("<a href=\"http://localhost:8080/zerobase-study21/load-wifi.jsp\">Open API 와이파이 정보 가져오기</a>");
+				out.write("<a href=\"http://localhost:8080/zerobase-study21/load-wifi.jsp\" onclick=\"loading()\">Open API 와이파이 정보 가져오기</a>");
 			out.write("</div>");
 			out.write("<br>");
 			out.write("<div>");
-				out.write("<form>");
+				
 					out.write("<label id=\"lat\" for=\"lat\">LAT: </label>");
-					out.write("<input type=\"text\" id=\"lat\" name=\"lat\"><span> , </span>");
+					out.write("<input type=\"text\" id=\"getLat\" name=\"lat\"><span> , </span>");
 					out.write("<label id=\"lnt\" for=\"lnt\">LNT: </label>");
-					out.write("<input type=\"text\" id=\"lnt\" name=\"lnt\"><span> </span>");
-					out.write("<button onclick=\"myLoc\">내 위치 가져오기</button><span> </span>");
-					out.write("<button onclick=\"myLoc\">근처 WIFI 정보 보기</button>");
+					out.write("<input type=\"text\" id=\"getLnt\" name=\"lnt\"><span> </span>");
+					out.write("<button onclick=\"myLoc()\">내 위치 가져오기</button><span> </span>");
+					out.write("<button onclick=\"myLoc2\">근처 WIFI 정보 보기</button>");
+					
 					out.write("<script>");
 					
+					out.write("const x = document.getElementById(\"getLat\");");
+					out.write("const y = document.getElementById(\"getLnt\");");
+
+					out.write("function myLoc() {");
+						out.write("if (navigator.geolocation) {");
+						out.write("navigator.geolocation.getCurrentPosition(showPosition);");
+						out.write("} else { ");
+						out.write("x.value = \"Geolocation not found.\";");
+						out.write("y.value = \"Geolocation not found.\";");
+						out.write("}");
+					out.write("}");
+
+					out.write("function showPosition(position) {");
+						out.write("x.value = position.coords.latitude;");
+						out.write("y.value = position.coords.longitude;");
+					out.write("}");
 					
-					
-					
+					out.write("function loading() {");
+					out.write("alert(\"로딩중이니 잠시 기다려주세요!\");");
+				out.write("}");
+
 					out.write("</script>");
-				out.write("</form>");
+				
 			out.write("</div>");
 			out.write("<br>");
 			out.write("<div>");
