@@ -115,7 +115,11 @@ public class TbPublicWifiInfo {
 		//_________________
 		
 		//db.resetHistory();
-		db.test("b", "b", "b", "b");
+//		db.test("b", "b", "b", "b");
 		
+		List<WifiClass> list = db.dbSelectTest2("126.870769","37.6492331");
+		for(WifiClass wifi : list) {
+			System.out.println(wifi.getX_SWIFI_MGR_NO()+" "+ wifi.getX_SWIFI_ADRES1()+" "+wifi.getX_SWIFI_ADRES2()+" "+wifi.getDistance());
+		}
 	}
 }

@@ -1,3 +1,6 @@
+<%@page import="db.WifiClass"%>
+<%@page import="java.util.List"%>
+<%@page import="db.LoadDb"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -21,7 +24,7 @@
 	</div>
 	<br>
 	<div>
-		<form action='home2.jsp' method="post">
+		<form>
 			<label id="lat" for="lat">LAT: </label> <input type="text"
 				id="getLat" name="lat"><span> , </span> <label id="lnt"
 				for="lnt">LNT: </label> <input type="text" id="getLnt" name="lnt"><span>
@@ -29,6 +32,7 @@
 			<button type="button" onclick="myLoc()">내 위치 가져오기</button>
 			<span> </span>
 			<input type="submit" value='근처 WIFI 정보 보기'>
+
 		</form>
 
 		<script>
@@ -49,12 +53,19 @@
 				y.value = position.coords.longitude;
 			}
 
+			function showWifi() {
+				alert("조회중!")
+			}
+
 			function loading() {
 				alert("로딩중이니 잠시 기다려주세요!");
 			}
 		</script>
 	</div>
 	<%
+	String x = request.getParameter("lat");
+	String y = request.getParameter("lnt");
+	
 	out.write("<br>");
 	out.write("<div>");
 	out.write("<table>");
@@ -77,12 +88,40 @@
 	out.write("<th>Y좌표</th>");
 	out.write("<th>작업일자</th>");
 	out.write("</tr>");
-	out.write("<tr class=\"tr1-1\">");
-	out.write("<td colspan=\"17\">위치 정보를 입력한 후에 조회해 주세요</td>");
-	out.write("</tr>");
+	
+	LoadDb db = new LoadDb();
+	db.dbSelectTest1(y, x);
+	List<WifiClass> list = db.dbSelectTest2(y, x);
+	
+	
+	for(WifiClass wifi : list){
+		out.write("<tr>");
+		out.write("<td>"+wifi.getDistance()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_MGR_NO()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_WRDOFC()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_MAIN_NM()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_ADRES1()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_ADRES2()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_INSTL_FLOOR()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_INSTL_TY()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_INSTL_MBY()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_SVC_SE()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_CMCWR()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_CNSTC_YEAR()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_INOUT_DOOR()+"</td>");
+		out.write("<td>"+wifi.getX_SWIFI_REMARS3()+"</td>");
+		out.write("<td>"+wifi.getLAT()+"</td>");
+		out.write("<td>"+wifi.getLNT()+"</td>");
+		out.write("<td>"+wifi.getWORK_DTTM()+"</td>");
+		out.write("</tr>");
+	}
 	out.write("</table>");
 	out.write("</div>");
+	
+	out.write("<p>"+x+" "+y+"</p>");
+	
 	%>
+	
 
 </body>
 </html>

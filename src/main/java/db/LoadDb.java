@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LoadDb {
@@ -116,6 +117,62 @@ public class LoadDb {
 		}
 	}
 
+	public void deleteInfoError() {
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		try {
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "delete from info where (lnt>90 or lnt<-90);";
+
+			int affected;
+
+			preparedStatement = connection.prepareStatement(sql);
+
+			affected = preparedStatement.executeUpdate();
+			if (affected < 0) {
+				System.out.println("저장 실패");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public void initDb(List<WifiClass> list) {
 
 		resetInfo();
@@ -136,7 +193,10 @@ public class LoadDb {
 		try {
 			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 
-			String sql = "insert into info\n" + "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			String sql = "insert into info(distance, X_SWIFI_MGR_NO, X_SWIFI_WRDOFC, X_SWIFI_ADRES1"
+					+ ", X_SWIFI_ADRES2, X_SWIFI_INSTL_FLOOR, X_SWIFI_INSTL_TY, X_SWIFI_INSTL_MBY"
+					+ ", X_SWIFI_SVC_SE, X_SWIFI_CMCWR, X_SWIFI_CNSTC_YEAR, X_SWIFI_INOUT_DOOR, "
+					+ "X_SWIFI_REMARS3, name, LAT, LNT, WORK_DTTM)" + "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);";
 
 			int affected;
 
@@ -190,19 +250,13 @@ public class LoadDb {
 				e.printStackTrace();
 			}
 		}
+		deleteInfoError();
 	}
 
-	public List<WifiClass> dbSelect() {
+	public void dbSelectTest1(String x, String y) {
 		String url = "jdbc:mariadb://localhost:3306/projectdb1";
 		String dbUserId = "testuser1";
 		String dbPassword = "0409";
-
-		// 드라이버로드
-		// 커넥션객체 생성
-		// 스테이트먼트 객체 생성
-		// 쿼리 실행
-		// 결과 수행
-		// 객체 연결 해제 (close)
 
 		try {
 			Class.forName("org.mariadb.jdbc.Driver");
@@ -212,50 +266,125 @@ public class LoadDb {
 
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
-		// Statement statement = null;
 		ResultSet rs = null;
-
-		String memberTypeValue = "email";
-		
-		List<WifiClass> list = null;
-		WifiClass tmp = null;
 
 		try {
 			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 
-			String sql = "select * from info where X_SWIFI_WRDOFC=\"서대문구\"";
+			String sql = "Set @location = POINT(" + x + "," + y + ");";
+			System.out.println("x좌표: " + x + " y좌표: " + y);
+
+			int affected;
 
 			preparedStatement = connection.prepareStatement(sql);
-			//preparedStatement.setString(1, memberTypeValue);
+
+			affected = preparedStatement.executeUpdate();
+			if (affected < 0) {
+				System.out.println("저장 실패");
+			} else {
+				System.out.println("좌표 설정 완료");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<WifiClass> dbSelectTest2(String x, String y) {
+
+		List<WifiClass> list = new ArrayList<>();
+
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		// String memberTypeValue = "limit";
+
+		try {
+			System.out.println("--check1--");
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "SELECT\r\n"
+					+ "    *, (\r\n"
+					+ "      6371 * acos (\r\n"
+					+ "      cos ( radians("+x+") )\r\n"
+					+ "      * cos( radians( lat ) )\r\n"
+					+ "      * cos( radians( lnt ) - radians("+y+") )\r\n"
+					+ "      + sin ( radians("+x+") )\r\n"
+					+ "      * sin( radians( lat ) )\r\n"
+					+ "    )\r\n"
+					+ ") AS dis\r\n"
+					+ "from info\r\n"
+					+ "order by dis limit 20;";
+			
+
+			int affected;
+			
+			System.out.println(sql);
+
+			preparedStatement = connection.prepareStatement(sql);
+			//preparedStatement.setString(1, " ");
 
 			rs = preparedStatement.executeQuery();
 
-			System.out.println("db load success!");
-
 			while (rs.next()) {
-				//wificlass 객체 반환하기
-				//(임의로 서대문구 위치한 객체 반환으로 테스트)
-				//후에 list에 하나씩 추가
-				//list 반환 후 테이블 표현
-				
-//				tmp.setLAT(rs.getString("X_SWIFI_MGR_NO"));
-//				tmp.setLNT(rs.);
-//				tmp.setWORK_DTTM(sql);
-//				tmp.setX_SWIFI_ADRES1(sql);
-//				tmp.setX_SWIFI_ADRES2(sql);
-//				tmp.setX_SWIFI_CMCWR(sql);
-//				tmp.setX_SWIFI_CNSTC_YEAR(sql);
-//				tmp.setX_SWIFI_INOUT_DOOR(sql);
-//				tmp.setX_SWIFI_INSTL_FLOOR(sql);
-//				tmp.setX_SWIFI_INSTL_MBY(sql);
-//				tmp.setX_SWIFI_INSTL_TY(sql);
-//				tmp.setX_SWIFI_MAIN_NM(sql);
-//				tmp.setX_SWIFI_MGR_NO(sql);
-//				tmp.setX_SWIFI_REMARS3(sql);
-//				tmp.setX_SWIFI_SVC_SE(sql);
-//				tmp.set
+				// System.out.println("hi");
+				// wificlass 객체 반환하기
+				// (임의로 서대문구 위치한 객체 반환으로 테스트)
+				// 후에 list에 하나씩 추가
+				// list 반환 후 테이블 표현
+				WifiClass tmp = new WifiClass();
+				tmp.setDistance(Double.toString(rs.getDouble("dis")));
+				tmp.setX_SWIFI_MGR_NO(rs.getString("X_SWIFI_MGR_NO"));
+				tmp.setX_SWIFI_WRDOFC(rs.getString("X_SWIFI_WRDOFC"));
+				tmp.setX_SWIFI_ADRES1(rs.getString("X_SWIFI_ADRES1"));
+				tmp.setX_SWIFI_ADRES2(rs.getString("X_SWIFI_ADRES2"));
+				tmp.setX_SWIFI_INSTL_FLOOR(rs.getString("X_SWIFI_INSTL_FLOOR"));
+				tmp.setX_SWIFI_INSTL_TY(rs.getString("X_SWIFI_INSTL_TY"));
+				tmp.setX_SWIFI_INSTL_MBY(rs.getString("X_SWIFI_INSTL_MBY"));
+				tmp.setX_SWIFI_SVC_SE(rs.getString("X_SWIFI_SVC_SE"));
+				tmp.setX_SWIFI_CMCWR(rs.getString("X_SWIFI_CMCWR"));
+				tmp.setX_SWIFI_CNSTC_YEAR(rs.getString("X_SWIFI_CNSTC_YEAR"));
+				tmp.setX_SWIFI_INOUT_DOOR(rs.getString("X_SWIFI_INOUT_DOOR"));
+				tmp.setX_SWIFI_REMARS3(rs.getString("X_SWIFI_REMARS3"));
+				tmp.setX_SWIFI_MAIN_NM(rs.getString("name"));
+				tmp.setLAT(rs.getString("LAT"));
+				tmp.setLNT(rs.getString("LNT"));
+				tmp.setWORK_DTTM(rs.getString("WORK_DTTM"));
 
-				System.out.println(X_SWIFI_MGR_NO + ", " + WORK_DTTM + ", " + LAT + ", " + LNT);
+				list.add(tmp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -428,6 +557,7 @@ public class LoadDb {
 			String sql = "insert into history\n" + "values (?, ?, ?, ?);";
 
 			int affected;
+
 			for (int i = 0; i < 3; i++) {
 				preparedStatement = connection.prepareStatement(sql);
 				preparedStatement.setString(1, X_SWIFI_MGR_NO + Integer.toString(i));
