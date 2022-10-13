@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -597,4 +598,144 @@ public class LoadDb {
 		}
 	}
 
+	public void autuSaveHistory(List<WifiClass> list) {
+
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+		
+		LocalDateTime now = LocalDateTime.now();
+
+		try {
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "insert into history(WORK_DTTM, LAT, LNT)"+
+					"values(?,?,?);";
+
+			int affected;
+
+			for (int i = 0; i < list.size(); i++) {
+				preparedStatement = connection.prepareStatement(sql);
+				preparedStatement.setString(1, now.toString());
+				preparedStatement.setString(2, list.get(i).getLAT());
+				preparedStatement.setString(3, list.get(i).getLNT());
+
+				affected = preparedStatement.executeUpdate();
+				if (affected < 0) {
+					System.out.println("저장 실패");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<WifiClass> loadHistory() {
+
+		List<WifiClass> list = new ArrayList<>();
+
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet rs = null;
+
+		// String memberTypeValue = "limit";
+
+		try {
+			System.out.println("--check1--");
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "select * from history;";
+			
+
+			int affected;
+			
+			System.out.println(sql);
+
+			preparedStatement = connection.prepareStatement(sql);
+			//preparedStatement.setString(1, " ");
+
+			rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				// System.out.println("hi");
+				// wificlass 객체 반환하기
+				// (임의로 서대문구 위치한 객체 반환으로 테스트)
+				// 후에 list에 하나씩 추가
+				// list 반환 후 테이블 표현
+				WifiClass tmp = new WifiClass();
+				tmp.setLAT(rs.getString("LAT"));
+				tmp.setLNT(rs.getString("LNT"));
+				tmp.setWORK_DTTM(rs.getString("WORK_DTTM"));
+
+				list.add(tmp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return list;
+	}
 }
