@@ -24,20 +24,19 @@
 	</div>
 	<br>
 	<div>
-		<form>
-			<label id="lat" for="lat">LAT: </label> <input type="text"
-				id="getLat" name="lat"><span> , </span> <label id="lnt"
-				for="lnt">LNT: </label> <input type="text" id="getLnt" name="lnt"><span>
-			</span>
-			<button type="button" onclick="myLoc()">내 위치 가져오기</button>
-			<span> </span>
+		<form method='get'>
+			<label id="lat" for="lat">LAT: </label> 
+			<input type="text" id="getLat" name="lat"><span> , </span> 
+			<label id="lnt" for="lnt">LNT: </label> 
+			<input type="text" id="getLnt" name="lnt"><span> </span>
+			<button type="button" onclick="myLoc()">내 위치 가져오기</button><span> </span>
 			<input type="submit" value='근처 WIFI 정보 보기'>
 
 		</form>
 
 		<script>
-			const x = document.getElementById("getLat");
-			const y = document.getElementById("getLnt");
+			//const x = document.getElementById("getLat");
+			//const y = document.getElementById("getLnt");
 
 			function myLoc() {
 				if (navigator.geolocation) {

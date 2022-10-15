@@ -738,4 +738,66 @@ public class LoadDb {
 		}
 		return list;
 	}
+
+	public void deleteFromHistory(String x, String y, String time) {
+
+		String url = "jdbc:mariadb://localhost:3306/projectdb1";
+		String dbUserId = "testuser1";
+		String dbPassword = "0409";
+
+		try {
+			Class.forName("org.mariadb.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		// Statement statement = null;
+		ResultSet rs = null;
+
+		try {
+			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
+
+			String sql = "delete from history\n" + "where LAT=? and LNT=? and WORK_DTTM=?;";
+
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, x);
+			preparedStatement.setString(2, y);
+			preparedStatement.setString(3, time);
+
+			int affected = preparedStatement.executeUpdate();
+
+			if (affected > 0) {
+				System.out.println("삭제 성공");
+			} else {
+				System.out.println("삭제 실패");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null && rs.isClosed()) {
+					rs.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (rs != null && !preparedStatement.isClosed()) {
+					preparedStatement.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			try {
+				if (connection != null && !connection.isClosed()) {
+					connection.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }

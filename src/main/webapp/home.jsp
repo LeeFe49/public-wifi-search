@@ -21,13 +21,12 @@
 	</div>
 	<br>
 	<div>
-		<form action='home2.jsp' method="post">
-			<label id="lat" for="lat">LAT: </label> <input type="text"
-				id="getLat" name="lat"><span> , </span> <label id="lnt"
-				for="lnt">LNT: </label> <input type="text" id="getLnt" name="lnt"><span>
-			</span>
-			<button type="button" onclick="myLoc()">내 위치 가져오기</button>
-			<span> </span>
+		<form action='home2.jsp' method="get">
+			<label id="lat" for="lat">LAT: </label> 
+			<input type="text" id="getLat" name="lat"><span> , </span> 
+			<label id="lnt" for="lnt">LNT: </label> 
+			<input type="text" id="getLnt" name="lnt"><span> </span>
+			<button type="button" onclick="myLoc()">내 위치 가져오기</button><span> </span>
 			<input type="submit" value='근처 WIFI 정보 보기'>
 		</form>
 
