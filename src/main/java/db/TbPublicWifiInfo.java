@@ -15,7 +15,7 @@ import java.io.IOException;
 public class TbPublicWifiInfo {
 	public static List<WifiClass> list(String[] cnt, int a, int b) throws IOException{
 		StringBuilder urlBuilder = new StringBuilder("http://openapi.seoul.go.kr:8088"); /*URL*/
-		urlBuilder.append("/" +  URLEncoder.encode("4445686c456368753836486758657a","UTF-8") ); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
+		urlBuilder.append("/" +  URLEncoder.encode("65707849646368753933556849746d","UTF-8") ); /*인증키 (sample사용시에는 호출시 제한됩니다.)*/
 		urlBuilder.append("/" +  URLEncoder.encode("json","UTF-8") ); /*요청파일타입 (xml,xmlf,xls,json) */
 		urlBuilder.append("/" + URLEncoder.encode("TbPublicWifiInfo","UTF-8")); /*서비스명 (대소문자 구분 필수입니다.)*/
 		urlBuilder.append("/" + URLEncoder.encode(Integer.toString(a),"UTF-8")); /*요청시작위치 (sample인증키 사용시 5이내 숫자)*/

@@ -89,8 +89,8 @@
 	out.write("</tr>");
 	
 	LoadDb db = new LoadDb();
-	db.dbSelectTest1(y, x);
-	List<WifiClass> list = db.dbSelectTest2(y, x);
+	db.dbSelectTest1(x, y);
+	List<WifiClass> list = db.dbSelectTest2(x, y);
 	db.autuSaveHistory(list);
 	
 	for(WifiClass wifi : list){

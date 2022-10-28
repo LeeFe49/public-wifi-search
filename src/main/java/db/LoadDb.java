@@ -136,7 +136,7 @@ public class LoadDb {
 		try {
 			connection = DriverManager.getConnection(url, dbUserId, dbPassword);
 
-			String sql = "delete from info where (lnt>90 or lnt<-90);";
+			String sql = "delete from info where (lat>90 or lat<-90);";
 
 			int affected;
 
@@ -175,6 +175,7 @@ public class LoadDb {
 	}
 
 	public void initDb(List<WifiClass> list) {
+		System.out.println("테스트: "+list.size());
 
 		resetInfo();
 		String url = "jdbc:mariadb://localhost:3306/projectdb1";
